@@ -1,4 +1,4 @@
-name := """hello-akka"""
+name := """hello-akka-cluster"""
 
 version := "1.0"
 
@@ -6,9 +6,9 @@ scalaVersion := "2.11.7"
 
 scalacOptions += "-deprecation"
 
-artifactName := { (version, module, artifact) =>  "hello.jar" }
+artifactName := { (version, module, artifact) =>  "helloAkkaCluster.jar" }
 
-assemblyJarName in assembly := "helloRemoteApp.jar"
+assemblyJarName in assembly := "helloAkkaRemoteApp.jar"
 
 mainClass in assembly := Some("HelloRemoteApp")
 
