@@ -12,7 +12,7 @@ object HelloRemoteApp extends App {
   val root = ConfigFactory.load()
 
   val config = ConfigFactory
-    .parseString(s"akka.remote.netty.tcp.hostname=$hostname")
+    .parseString(s"akka.remote.netty.tcp.hostname='$hostname'")
     .withFallback(root.getConfig("helloRemote"))
 
   val system = ActorSystem("HelloRemoteSystem", config)
