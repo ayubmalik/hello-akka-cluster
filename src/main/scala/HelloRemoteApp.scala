@@ -15,6 +15,6 @@ object HelloRemoteApp extends App {
     .withFallback(root.getConfig("helloRemote"))
 
   val system = ActorSystem("HelloRemoteSystem", config)
- 
+  val hello = system.actorOf(Props[HelloRemoteActor], "helloRemoteActor")
 
 }
