@@ -17,7 +17,7 @@ import scala.io.StdIn
 class HelloClientActor(val remote: ActorSelection) extends Actor with ActorLogging {
   def receive = waiting
 
-  def inquire() =  remote ! Identify(self)
+  def inquire() = remote ! Identify(self)
 
   override def preStart() {
     inquire()
@@ -44,7 +44,7 @@ class HelloClientActor(val remote: ActorSelection) extends Actor with ActorLoggi
 
 }
 
-object ClientApp extends App {
+object HelloClientApp extends App {
   val ip = if (!args.isEmpty) args(0) else "127.0.0.1"
   val remoteUrl = s"akka.tcp://HelloRemoteApp@${ip}:2552/user/helloActor"
   println("using url:" + remoteUrl)
@@ -52,7 +52,7 @@ object ClientApp extends App {
   val config = root.getConfig("helloClient")
   val system = ActorSystem("helloClient", config)
   val remote = system.actorSelection(remoteUrl)
-  val client = system.actorOf(Props(classOf[ClientActor], remote))
+  val client = system.actorOf(Props(classOf[HelloClientActor], remote))
   val inbox = Inbox.create(system)
   println("Start typing messages: q to quit")
   Iterator.continually(StdIn.readLine()).takeWhile(_ != "q").foreach(msg => inbox.send(client, msg))
