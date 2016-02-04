@@ -46,7 +46,7 @@ class HelloClientActor(val remote: ActorSelection) extends Actor with ActorLoggi
 
 object HelloClientApp extends App {
   val ip = if (!args.isEmpty) args(0) else "127.0.0.1"
-  val remoteUrl = s"akka.tcp://HelloRemoteApp@${ip}:8000/user/helloRemoteActor"
+  val remoteUrl = s"akka.tcp://HelloRemoteSystem@${ip}:2552/user/helloRemoteActor"
   println("using url:" + remoteUrl)
   val root = ConfigFactory.load()
   val config = root.getConfig("helloClient")
