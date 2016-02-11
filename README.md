@@ -2,5 +2,5 @@
 Akka (Scala) app with remote actors and clustering
 
 # Build
-This project is build by travis
+This project is built by travis-ci
 
