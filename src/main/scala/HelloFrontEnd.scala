@@ -16,7 +16,8 @@ class HelloFrontEnd extends Actor with ActorLogging {
       log.info("BACKENDS: {}", backends)
     case Terminated(a) =>
       backends = backends.filterNot(_ == a)
-    case "ping" if backends.isEmpty => log.info("empty")
+    case "ping" if backends.isEmpty => 
+      log.info("got message from: " + sender + " but EMPTY")
     case "ping" =>
       jobCounter += 1
       backends(jobCounter % backends.size) forward "ping"

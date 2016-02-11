@@ -39,14 +39,18 @@ class HelloClientActor(val remote: ActorSelection) extends Actor with ActorLoggi
     case Terminated(`ref`) => context.become(waiting)
     case ActorIdentity(`self`, _) => // ignore
     case Hello(message) => println("Hello response: " + message)
-    case msg: String => ref ! msg
+    case Ping(msg) => ref ! "ping"
+    case "pong" => println("pong from: " + sender)
   }
 
 }
 
+case class Ping(msg: String)
+
 object HelloClientApp extends App {
   val ip = if (!args.isEmpty) args(0) else "127.0.0.1"
-  val remoteUrl = s"akka.tcp://HelloRemoteSystem@${ip}:2552/user/helloRemoteActor"
+  //  val remoteUrl = s"akka.tcp://HelloRemoteSystem@${ip}:2552/user/helloRemoteActor"
+  val remoteUrl = s"akka.tcp://HelloRemoteSystem@${ip}:2551/user/frontend"
   println("using url:" + remoteUrl)
   val root = ConfigFactory.load()
   val config = root.getConfig("helloClient")
@@ -55,7 +59,7 @@ object HelloClientApp extends App {
   val client = system.actorOf(Props(classOf[HelloClientActor], remote))
   val inbox = Inbox.create(system)
   println("Start typing messages: q to quit")
-  Iterator.continually(StdIn.readLine()).takeWhile(_ != "q").foreach(msg => inbox.send(client, msg))
+  Iterator.continually(StdIn.readLine()).takeWhile(_ != "q").foreach(msg => inbox.send(client, Ping(msg)))
   println("Exiting")
   system.terminate
 }
