@@ -21,7 +21,8 @@ class PingPongActor extends Actor with ActorLogging {
 
   def receive = {
     case "ping" => {
-      log.info("ping from: " + sender)
+   
+      log.info (self + " ping from: " + sender)
       sender ! "pong"
     }
     case MemberUp(m) => register(m)
