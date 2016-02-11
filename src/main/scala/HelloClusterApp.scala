@@ -16,23 +16,23 @@ object HelloClusterApp extends App {
     .withFallback(ConfigFactory.parseString("akka.cluster.roles = [frontend]"))
     .withFallback(root.getConfig("helloCluster"))
     .withFallback(root)
-    
-  val fe = ActorSystem("HelloClusterSystem", feConfig)
+
+  val fe = ActorSystem("HelloRemoteSystem", feConfig)
   val helloFrontend = fe.actorOf(Props[HelloFrontEnd], "frontend")
 
-  val ports = Seq(2552, 0, 0)
+  val ports = Seq(2552, 0)
   ports foreach { port =>
     val config = ConfigFactory
       .parseString(s"akka.remote.netty.tcp.port=$port")
       .withFallback(ConfigFactory.parseString("akka.cluster.roles = [backend]"))
       .withFallback(root.getConfig("helloCluster"))
-    val system = ActorSystem("HelloClusterSystem", config)
+    val system = ActorSystem("HelloRemoteSystem", config)
     system.actorOf(Props[PingPongActor], "backend")
   }
 
   import scala.concurrent.ExecutionContext.Implicits.global
   val mb = akka.actor.Inbox.create(fe)
-  fe.scheduler.schedule(3.seconds, 500.millis) {
+  fe.scheduler.schedule(3.seconds, 10.seconds) {
     mb.send(helloFrontend, "ping")
   }
 
