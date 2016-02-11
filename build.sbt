@@ -10,7 +10,9 @@ artifactName := { (version, module, artifact) =>  "helloAkkaCluster.jar" }
 
 assemblyJarName in assembly := "helloAkkaRemoteApp.jar"
 
-mainClass in assembly := Some("HelloRemoteApp")
+mainClass in assembly := Some("HelloClusterApp")
+//mainClass in assembly := Some("HelloRemoteApp")
+
 
 EclipseKeys.withSource := true
 
